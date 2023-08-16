@@ -4,11 +4,14 @@
 # @Email : cuba3@163.com
 # @File : pdf2Json.py
 # @Project : cramForSMP2023ChatGLM
-import pdfminer
-import pdfminer.high_level
-import json
-def pdf2Json(filePath):
-    text = pdfminer.high_level.extract_text(filePath)
-    # 将文本转换为JSON字符串
-    jsonStr = json.dumps({'text': text})
-    return jsonStr
+from pypdf import PdfReader
+def pdf2Json(filename):
+    # Open and read PDF file
+    outputJson = {}
+    reader = PdfReader(filename)
+    number_of_pages = len(reader.pages)
+    for num in range(0,number_of_pages):
+        page = reader.pages[num]
+        text = page.extract_text()
+        outputJson[page]=text
+    return outputJson
